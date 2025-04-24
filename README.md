@@ -31,7 +31,7 @@ The report includes the following key data visualizations:
 ## 🔗 View the Report
 
 Access the live report via GitHub Pages:  
-➡️ [Click here to view the HTML report](https://deepakshebani2.github.io/unicef-quarto-report/Deepak_report.html)
+➡️ [Click here to view the HTML report](https://github.com/deepakshebani2/Deepak_report/blob/main/Deepak_report.html)
 
 > *(Replace the link above with your actual GitHub Pages link)*
 
