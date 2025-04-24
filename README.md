@@ -1,6 +1,6 @@
 # UNICEF Data Analysis Report 📊🌍
 
-This project is a data-driven report created for an academic assignment, using public UNICEF datasets to analyze global disparities in child healthcare, with a focus on diarrhoea treatment in children under 5.
+This project is a data-driven report created for an academic assignment, using public UNICEF datasets to analyze global disparities in child healthcare, with a focus on diarrhoea treatment in children aged under 5.
 
 ## 📌 Objective
 
@@ -31,7 +31,7 @@ The report includes the following key data visualizations:
 ## 🔗 View the Report
 
 Access the live report via GitHub Pages:  
-➡️ [Click here to view the HTML report](https://yourusername.github.io/unicef-quarto-report/Deepak_report.html)
+➡️ [Click here to view the HTML report](https://deepakshebani2.github.io/unicef-quarto-report/Deepak_report.html)
 
 > *(Replace the link above with your actual GitHub Pages link)*
 
