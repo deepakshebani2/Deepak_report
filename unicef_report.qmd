@@ -13,9 +13,6 @@ jupyter: python3
 
 ## Introduction
 
-This report analyzes trends, patterns, and relationships related to diarrhoea treatment coverage globally, using UNICEF health indicators.  
-Visualizations include a global interactive map, time-series line chart, bar chart of top-performing countries, and a scatter plot exploring economic correlations.  
-The goal is to understand disparities and highlight areas of improvement for adolescent health.
 
 ---
 
