@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Deepak Shebani">
+
+<title>Diarrhoea Treatment Analysis (UNICEF Dataset)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="unicef_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="unicef_report_files/libs/quarto-html/quarto.js"></script>
+<script src="unicef_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="unicef_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="unicef_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="unicef_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="unicef_report_files/libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="unicef_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="unicef_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="unicef_report_files/libs/bootstrap/bootstrap-369b15f3c0ec87123807f315e82ca9ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script type="text/javascript">
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+if (typeof require !== 'undefined') {
+require.undef("plotly");
+requirejs.config({
+    paths: {
+        'plotly': ['https://cdn.plot.ly/plotly-2.35.2.min']
+    }
+});
+require(['plotly'], function(Plotly) {
+    window._Plotly = Plotly;
+});
+}
+</script>
+
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#global-overview-diarrhoea-treatment-coverage-map-2000" id="toc-global-overview-diarrhoea-treatment-coverage-map-2000" class="nav-link" data-scroll-target="#global-overview-diarrhoea-treatment-coverage-map-2000">1. Global Overview: Diarrhoea Treatment Coverage Map (2000)</a></li>
+  <li><a href="#line-chart-trends-in-diarrhoea-treatment-coverage-20002022" id="toc-line-chart-trends-in-diarrhoea-treatment-coverage-20002022" class="nav-link" data-scroll-target="#line-chart-trends-in-diarrhoea-treatment-coverage-20002022">2. Line Chart: Trends in Diarrhoea Treatment Coverage (2000–2022)</a></li>
+  <li><a href="#bar-chart-top-10-countries-by-diarrhoea-treatment-2022" id="toc-bar-chart-top-10-countries-by-diarrhoea-treatment-2022" class="nav-link" data-scroll-target="#bar-chart-top-10-countries-by-diarrhoea-treatment-2022">3. Bar Chart: Top 10 Countries by Diarrhoea Treatment (2022)</a></li>
+  <li><a href="#scatter-plot-gdp-per-capita-vs-diarrhoea-treatment-2022" id="toc-scatter-plot-gdp-per-capita-vs-diarrhoea-treatment-2022" class="nav-link" data-scroll-target="#scatter-plot-gdp-per-capita-vs-diarrhoea-treatment-2022">4. Scatter Plot: GDP per Capita vs Diarrhoea Treatment (2022)</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Diarrhoea Treatment Analysis (UNICEF Dataset)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Deepak Shebani </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This report analyzes trends, patterns, and relationships related to diarrhoea treatment coverage globally, using UNICEF health indicators.<br>
+Visualizations include a global interactive map, time-series line chart, bar chart of top-performing countries, and a scatter plot exploring economic correlations.<br>
+The goal is to understand disparities and highlight areas of improvement for adolescent health.</p>
+<hr>
+</section>
+<section id="global-overview-diarrhoea-treatment-coverage-map-2000" class="level2">
+<h2 class="anchored" data-anchor-id="global-overview-diarrhoea-treatment-coverage-map-2000">1. Global Overview: Diarrhoea Treatment Coverage Map (2000)</h2>
+<div id="1b0dc4f4" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and merge data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ind <span class="op">=</span> pd.read_csv(<span class="st">'unicef_indicator_1.csv'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>meta <span class="op">=</span> pd.read_csv(<span class="st">'unicef_metadata.csv'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> ind.merge(meta, on<span class="op">=</span><span class="st">'alpha_3_code'</span>, how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df_2000 <span class="op">=</span> df[(df[<span class="st">'time_period'</span>] <span class="op">==</span> <span class="dv">2000</span>) <span class="op">&amp;</span> (df[<span class="st">'sex'</span>] <span class="op">==</span> <span class="st">'Total'</span>)]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># World map</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.choropleth(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    df_2000,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    locations<span class="op">=</span><span class="st">'alpha_3_code'</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'obs_value'</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    hover_name<span class="op">=</span><span class="st">'country_x'</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    color_continuous_scale<span class="op">=</span><span class="st">'Plasma'</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'obs_value'</span>: <span class="st">'Diarrhoea treatment (%)'</span>},</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Diarrhoea Treatment Coverage (2000)'</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>fig.update_geos(showocean<span class="op">=</span><span class="va">True</span>, oceancolor<span class="op">=</span><span class="st">'lightblue'</span>, showland<span class="op">=</span><span class="va">True</span>, landcolor<span class="op">=</span><span class="st">'white'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>                            <div id="7bda61a4-b891-4aae-8999-1e38141d5f3e" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("7bda61a4-b891-4aae-8999-1e38141d5f3e")) {                    Plotly.newPlot(                        "7bda61a4-b891-4aae-8999-1e38141d5f3e",                        [{"coloraxis":"coloraxis","geo":"geo","hovertemplate":"\u003cb\u003e%{hovertext}\u003c\u002fb\u003e\u003cbr\u003e\u003cbr\u003ealpha_3_code=%{location}\u003cbr\u003eDiarrhoea treatment (%)=%{z}\u003cextra\u003e\u003c\u002fextra\u003e","hovertext":["Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Albania","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Armenia","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Azerbaijan","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bangladesh","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bolivia, Plurinational State of","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Bosnia and Herzegovina","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Botswana","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Burundi","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cambodia","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Cameroon","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Central African Republic","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Chad","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Colombia","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Comoros","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Ivory Coast","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Dominican Republic","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Egypt","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Equatorial Guinea","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Swaziland","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Ethiopia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Gambia","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guinea-Bissau","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Guyana","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Haiti","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Indonesia","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Iraq","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Jamaica","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Kenya","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lao People's Democratic Republic","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lebanon","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Lesotho","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Madagascar","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Malawi","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Mongolia","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Myanmar","Namibia","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Niger","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Peru","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Moldova, Republic of","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Rwanda","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Sao Tome and Principe","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Senegal","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Sierra Leone","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Somalia","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Sudan","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Suriname","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Tajikistan","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Togo","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Tunisia","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Turkmenistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Uzbekistan","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Venezuela, Bolivarian Republic of","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam","Vietnam"],"locations":["ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ALB","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","ARM","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","AZE","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BGD","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BOL","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BIH","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BWA","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","BDI","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","KHM","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CMR","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","CAF","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","TCD","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COL","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","COM","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","CIV","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","DOM","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","EGY","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","GNQ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","SWZ","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","ETH","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GMB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GNB","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","GUY","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","HTI","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IDN","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","IRQ","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","JAM","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","KEN","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LAO","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LBN","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","LSO","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MDG","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MWI","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MNG","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","MMR","NAM","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","NER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","PER","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","MDA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","RWA","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","STP","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SEN","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SLE","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SOM","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SDN","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","SUR","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TJK","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TGO","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TUN","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","TKM","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","UZB","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VEN","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM","VNM"],"name":"","z":[23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,23.5,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,10.1,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,61.4,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,24.6,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,48.9,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,11.0,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,17.8,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,17.2,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,15.6,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,36.3,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,18.5,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,16.1,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,28.0,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,33.7,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,28.9,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,66.3,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,33.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,39.0,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.1,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,34.8,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,43.2,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,26.5,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,24.4,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,39.2,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,31.9,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,44.4,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,53.9,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,10.4,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,47.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,55.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,44.9,61.1,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.3,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,21.9,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,7.5,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,13.6,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,31.1,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,41.5,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,29.8,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,27.4,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.5,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,35.3,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,12.9,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,31.5,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,46.7,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,32.0,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,37.7,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1,11.1],"type":"choropleth"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"geo":{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"center":{},"showocean":true,"oceancolor":"lightblue","showland":true,"landcolor":"white"},"coloraxis":{"colorbar":{"title":{"text":"Diarrhoea treatment (%)"}},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"legend":{"tracegroupgap":0},"title":{"text":"Diarrhoea Treatment Coverage (2000)"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('7bda61a4-b891-4aae-8999-1e38141d5f3e');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<hr>
+</section>
+<section id="line-chart-trends-in-diarrhoea-treatment-coverage-20002022" class="level2">
+<h2 class="anchored" data-anchor-id="line-chart-trends-in-diarrhoea-treatment-coverage-20002022">2. Line Chart: Trends in Diarrhoea Treatment Coverage (2000–2022)</h2>
+<div id="9deeac64" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select four countries</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> [<span class="st">'India'</span>, <span class="st">'Nigeria'</span>, <span class="st">'Bangladesh'</span>, <span class="st">'Kenya'</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df_line <span class="op">=</span> df[(df[<span class="st">'sex'</span>] <span class="op">==</span> <span class="st">'Total'</span>) <span class="op">&amp;</span> (df[<span class="st">'country_x'</span>].isin(countries))].copy()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df_line <span class="op">=</span> df_line.groupby([<span class="st">'country_x'</span>, <span class="st">'time_period'</span>], as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'obs_value'</span>].mean()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.line(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    df_line,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'time_period'</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'obs_value'</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'country_x'</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    markers<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'time_period'</span>: <span class="st">'Year'</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'obs_value'</span>: <span class="st">'Diarrhoea treatment (%)'</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'country_x'</span>: <span class="st">'Country'</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Trends in Diarrhoea Treatment Coverage (2000–2022)'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>                            <div id="8334fc0c-0ac3-4c02-9214-25387fa360a2" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("8334fc0c-0ac3-4c02-9214-25387fa360a2")) {                    Plotly.newPlot(                        "8334fc0c-0ac3-4c02-9214-25387fa360a2",                        [{"hovertemplate":"Country=Bangladesh\u003cbr\u003eYear=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Bangladesh","line":{"color":"#636efa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"Bangladesh","orientation":"v","showlegend":true,"x":[2000,2004,2006,2007,2011,2013,2014,2018,2019],"xaxis":"x","y":[61.4,67.2,64.4,76.6,77.6,73.0,77.0,83.3,72.4],"yaxis":"y","type":"scatter"},{"hovertemplate":"Country=India\u003cbr\u003eYear=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"India","line":{"color":"#EF553B","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"India","orientation":"v","showlegend":true,"x":[2006,2014,2016,2021],"xaxis":"x","y":[26.0,39.3,50.6,60.6],"yaxis":"y","type":"scatter"},{"hovertemplate":"Country=Kenya\u003cbr\u003eYear=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Kenya","line":{"color":"#00cc96","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"Kenya","orientation":"v","showlegend":true,"x":[2000,2003,2009,2014,2022],"xaxis":"x","y":[39.2,29.2,38.8,53.8,48.3],"yaxis":"y","type":"scatter"},{"hovertemplate":"Country=Nigeria\u003cbr\u003eYear=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Nigeria","line":{"color":"#ab63fa","dash":"solid"},"marker":{"symbol":"circle"},"mode":"lines+markers","name":"Nigeria","orientation":"v","showlegend":true,"x":[2003,2008,2011,2013,2017,2018,2021],"xaxis":"x","y":[18.2,25.5,26.0,33.7,36.8,40.0,45.7],"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Year"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Diarrhoea treatment (%)"}},"legend":{"title":{"text":"Country"},"tracegroupgap":0},"title":{"text":"Trends in Diarrhoea Treatment Coverage (2000–2022)"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('8334fc0c-0ac3-4c02-9214-25387fa360a2');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<hr>
+</section>
+<section id="bar-chart-top-10-countries-by-diarrhoea-treatment-2022" class="level2">
+<h2 class="anchored" data-anchor-id="bar-chart-top-10-countries-by-diarrhoea-treatment-2022">3. Bar Chart: Top 10 Countries by Diarrhoea Treatment (2022)</h2>
+<div id="ae3ae5ec" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_bar <span class="op">=</span> df[(df[<span class="st">'time_period'</span>] <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span> (df[<span class="st">'sex'</span>] <span class="op">==</span> <span class="st">'Total'</span>)].copy()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df_bar <span class="op">=</span> df_bar.groupby(<span class="st">'country_x'</span>, as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'obs_value'</span>].mean()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df_bar <span class="op">=</span> df_bar.sort_values(<span class="st">'obs_value'</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">10</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.bar(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    df_bar,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'country_x'</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'obs_value'</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span><span class="st">'obs_value'</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{<span class="st">'country_x'</span>: <span class="st">'Country'</span>, <span class="st">'obs_value'</span>: <span class="st">'Diarrhoea treatment (%)'</span>},</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Top 10 Countries by Diarrhoea Treatment (2022)'</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>fig.update_traces(texttemplate<span class="op">=</span><span class="st">'%</span><span class="sc">{text:.1f}</span><span class="st">%'</span>, textposition<span class="op">=</span><span class="st">'outside'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>fig.update_layout(showlegend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>                            <div id="671c49eb-4ca5-4d10-8c80-0ffb69d7c437" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("671c49eb-4ca5-4d10-8c80-0ffb69d7c437")) {                    Plotly.newPlot(                        "671c49eb-4ca5-4d10-8c80-0ffb69d7c437",                        [{"alignmentgroup":"True","hovertemplate":"Country=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"v","showlegend":false,"text":[67.9,67.2,48.6,48.3,39.8,39.1,38.4,34.9,28.6,17.7],"textposition":"outside","x":["Swaziland","Uzbekistan","Philippines","Kenya","Ghana","Tanzania, United Republic of","Nepal","Comoros","Cambodia","Malaysia"],"xaxis":"x","y":[67.9,67.2,48.6,48.3,39.8,39.1,38.4,34.9,28.6,17.7],"yaxis":"y","type":"bar","texttemplate":"%{text:.1f}%"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Country"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Diarrhoea treatment (%)"}},"legend":{"tracegroupgap":0},"title":{"text":"Top 10 Countries by Diarrhoea Treatment (2022)"},"barmode":"relative","showlegend":false},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('671c49eb-4ca5-4d10-8c80-0ffb69d7c437');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<hr>
+</section>
+<section id="scatter-plot-gdp-per-capita-vs-diarrhoea-treatment-2022" class="level2">
+<h2 class="anchored" data-anchor-id="scatter-plot-gdp-per-capita-vs-diarrhoea-treatment-2022">4. Scatter Plot: GDP per Capita vs Diarrhoea Treatment (2022)</h2>
+<div id="0bd61358" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_scatter <span class="op">=</span> df[(df[<span class="st">'time_period'</span>] <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span> (df[<span class="st">'sex'</span>] <span class="op">==</span> <span class="st">'Total'</span>)].copy()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df_scatter <span class="op">=</span> df_scatter.dropna(subset<span class="op">=</span>[<span class="st">'GDP per capita (constant 2015 US$)'</span>, <span class="st">'obs_value'</span>])</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df_scatter <span class="op">=</span> df_scatter.groupby(<span class="st">'country_x'</span>, as_index<span class="op">=</span><span class="va">False</span>).agg({</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'GDP per capita (constant 2015 US$)'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'obs_value'</span>: <span class="st">'mean'</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    df_scatter,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">'GDP per capita (constant 2015 US$)'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">'obs_value'</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    text<span class="op">=</span><span class="st">'country_x'</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    trendline<span class="op">=</span><span class="st">'ols'</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>{</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'GDP per capita (constant 2015 US$)'</span>: <span class="st">'GDP per capita (US$)'</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'obs_value'</span>: <span class="st">'Diarrhoea treatment (%)'</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'GDP per Capita vs Diarrhoea Treatment (2022)'</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>fig.update_traces(marker<span class="op">=</span><span class="bu">dict</span>(size<span class="op">=</span><span class="dv">8</span>, color<span class="op">=</span><span class="st">'blue'</span>), textposition<span class="op">=</span><span class="st">'top center'</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>                            <div id="ecb5d40b-8232-4580-9c66-d3999a7ef821" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("ecb5d40b-8232-4580-9c66-d3999a7ef821")) {                    Plotly.newPlot(                        "ecb5d40b-8232-4580-9c66-d3999a7ef821",                        [{"hovertemplate":"GDP per capita (US$)=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y}\u003cbr\u003ecountry_x=%{text}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"blue","symbol":"circle","size":8},"mode":"markers+text","name":"","orientation":"v","showlegend":false,"text":["Benin","Cambodia","Comoros","Ghana","Kenya","Malaysia","Nepal","Philippines","Swaziland","Tanzania, United Republic of","Uzbekistan"],"x":[830.0761802189593,1007.8037897635743,1239.9817028492753,1179.149039355166,1219.5842401666637,5290.282246575559,535.1773650291561,1959.3443418363197,2231.1903921249645,710.7803440093996,2003.106757840984],"xaxis":"x","y":[14.8,28.6,34.9,39.8,48.3,17.7,38.4,48.6,67.9,39.1,67.2],"yaxis":"y","type":"scatter","textposition":"top center"},{"hovertemplate":"\u003cb\u003eOLS trendline\u003c\u002fb\u003e\u003cbr\u003eobs_value = -0.00133569 * GDP per capita (constant 2015 US$) + 42.6926\u003cbr\u003eR\u003csup\u003e2\u003c\u002fsup\u003e=0.010640\u003cbr\u003e\u003cbr\u003eGDP per capita (US$)=%{x}\u003cbr\u003eDiarrhoea treatment (%)=%{y} \u003cb\u003e(trend)\u003c\u002fb\u003e\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"blue","symbol":"circle","size":8},"mode":"lines","name":"","showlegend":false,"x":[535.1773650291561,710.7803440093996,830.0761802189593,1007.8037897635743,1179.149039355166,1219.5842401666637,1239.9817028492753,1959.3443418363197,2003.106757840984,2231.1903921249645,5290.282246575559],"xaxis":"x","y":[41.97773443427257,41.74318312142387,41.58384075056646,41.34645158786415,41.117587285700935,41.06357835321748,41.036333646557196,40.07548746747443,40.017034403711314,39.71238515361728,35.6263837955943],"yaxis":"y","type":"scatter","textposition":"top center"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"GDP per capita (US$)"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Diarrhoea treatment (%)"}},"legend":{"tracegroupgap":0},"title":{"text":"GDP per Capita vs Diarrhoea Treatment (2022)"}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('ecb5d40b-8232-4580-9c66-d3999a7ef821');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>This interactive report reveals significant disparities in diarrhoea treatment across regions.<br>
+While economic indicators correlate with higher treatment coverage, governance, policy, and healthcare investment are equally critical.<br>
+Interactive charts and collapsible code blocks ensure this report is accessible, transparent, and insightful for both data and policy audiences.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
