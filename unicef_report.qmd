@@ -44,6 +44,11 @@ fig = px.choropleth(
 )
 fig.update_geos(showocean=True, oceancolor='lightblue', showland=True, landcolor='white')
 fig
+
+The choropleth world map presents diarrhoea treatment coverage across countries in 2000.  
+Regions such as parts of Latin America and Southeast Asia show relatively high treatment rates, indicating better healthcare access.  
+Conversely, many countries in Sub-Saharan Africa demonstrate lower coverage, emphasizing persistent health infrastructure challenges.  
+This global visualization highlights urgent geographical disparities needing policy and funding interventions.
 ```
 
 ---
