@@ -1,0 +1,161 @@
+---
+title: "Diarrhoea Treatment Analysis (UNICEF Dataset)"
+author: "Deepak Shebani"
+student_number: 10864
+programme: MSc in Business Management
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+jupyter: python3
+---
+
+## Introduction
+
+This report analyzes trends, patterns, and relationships related to diarrhoea treatment coverage globally, using UNICEF health indicators.  
+Visualizations include a global interactive map, time-series line chart, bar chart of top-performing countries, and a scatter plot exploring economic correlations.  
+The goal is to understand disparities and highlight areas of improvement for adolescent health.
+
+---
+
+## 1. Global Overview: Diarrhoea Treatment Coverage Map (2000)
+
+```{python}
+#| code-fold: true
+import pandas as pd
+import plotly.express as px
+
+# Load and merge data
+ind = pd.read_csv('unicef_indicator_1.csv')
+meta = pd.read_csv('unicef_metadata.csv')
+df = ind.merge(meta, on='alpha_3_code', how='left')
+df_2000 = df[(df['time_period'] == 2000) & (df['sex'] == 'Total')]
+
+# World map
+fig = px.choropleth(
+    df_2000,
+    locations='alpha_3_code',
+    color='obs_value',
+    hover_name='country_x',
+    color_continuous_scale='Plasma',
+    labels={'obs_value': 'Diarrhoea treatment (%)'},
+    title='Diarrhoea Treatment Coverage (2000)'
+)
+fig.update_geos(showocean=True, oceancolor='lightblue', showland=True, landcolor='white')
+fig
+
+```
+The choropleth world map presents diarrhoea treatment coverage across countries in 2000.  
+Regions such as parts of Latin America and Southeast Asia show relatively high treatment rates, indicating better healthcare access.  
+Conversely, many countries in Sub-Saharan Africa demonstrate lower coverage, emphasizing persistent health infrastructure challenges.  
+This global visualization highlights urgent geographical disparities needing policy and funding interventions.
+---
+
+## 2. Line Chart: Trends in Diarrhoea Treatment Coverage (2000–2022)
+
+```{python}
+#| code-fold: true
+# Select four countries
+countries = ['India', 'Nigeria', 'Bangladesh', 'Kenya']
+df_line = df[(df['sex'] == 'Total') & (df['country_x'].isin(countries))].copy()
+df_line = df_line.groupby(['country_x', 'time_period'], as_index=False)['obs_value'].mean()
+
+fig = px.line(
+    df_line,
+    x='time_period',
+    y='obs_value',
+    color='country_x',
+    markers=True,
+    labels={
+        'time_period': 'Year',
+        'obs_value': 'Diarrhoea treatment (%)',
+        'country_x': 'Country'
+    },
+    title='Trends in Diarrhoea Treatment Coverage (2000–2022)'
+)
+fig
+```
+
+The line chart displays the progression of diarrhoea treatment coverage for four selected countries: India, Nigeria, Bangladesh, and Kenya.  
+Notable observations include:
+- **Bangladesh** shows steady improvement over time, suggesting successful public health interventions.
+- **Nigeria** lags consistently, indicating systemic healthcare gaps.
+- **India** and **Kenya** demonstrate moderate progress but remain uneven, hinting at regional inequalities within countries.
+
+Sustained and equitable investment is crucial to maintain and accelerate these improvements.
+
+
+---
+
+## 3. Bar Chart: Top 10 Countries by Diarrhoea Treatment (2022)
+
+```{python}
+#| code-fold: true
+df_bar = df[(df['time_period'] == 2022) & (df['sex'] == 'Total')].copy()
+df_bar = df_bar.groupby('country_x', as_index=False)['obs_value'].mean()
+df_bar = df_bar.sort_values('obs_value', ascending=False).head(10)
+
+fig = px.bar(
+    df_bar,
+    x='country_x',
+    y='obs_value',
+    text='obs_value',
+    labels={'country_x': 'Country', 'obs_value': 'Diarrhoea treatment (%)'},
+    title='Top 10 Countries by Diarrhoea Treatment (2022)'
+)
+fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+fig.update_layout(showlegend=False)
+fig
+```
+
+The bar chart ranks the top 10 countries with the highest diarrhoea treatment coverage in 2022.  
+Small island nations and high-income countries dominate the list, likely due to better healthcare access, education, and infrastructure.  
+The narrow spread of high percentages among these countries reflects the global challenge of scaling such outcomes across larger or less wealthy nations.
+
+This highlights successful models worth studying and adapting in other contexts.
+
+
+---
+
+## 4. Scatter Plot: GDP per Capita vs Diarrhoea Treatment (2022)
+
+```{python}
+#| code-fold: true
+df_scatter = df[(df['time_period'] == 2022) & (df['sex'] == 'Total')].copy()
+df_scatter = df_scatter.dropna(subset=['GDP per capita (constant 2015 US$)', 'obs_value'])
+df_scatter = df_scatter.groupby('country_x', as_index=False).agg({
+    'GDP per capita (constant 2015 US$)': 'mean',
+    'obs_value': 'mean'
+})
+
+fig = px.scatter(
+    df_scatter,
+    x='GDP per capita (constant 2015 US$)',
+    y='obs_value',
+    text='country_x',
+    trendline='ols',
+    labels={
+        'GDP per capita (constant 2015 US$)': 'GDP per capita (US$)',
+        'obs_value': 'Diarrhoea treatment (%)'
+    },
+    title='GDP per Capita vs Diarrhoea Treatment (2022)'
+)
+fig.update_traces(marker=dict(size=8, color='blue'), textposition='top center')
+fig
+```
+
+The scatter plot explores the relationship between a country's GDP per capita and its diarrhoea treatment coverage in 2022.  
+A positive correlation is observed — generally, countries with higher GDP tend to report better treatment rates.  
+However, there are visible outliers suggesting that economic strength alone is not sufficient; targeted public health initiatives and governance quality play critical roles too.
+
+Investments in both economic development and healthcare systems are needed to sustain and broaden health gains.
+
+
+---
+
+## Conclusion
+
+This interactive report reveals significant disparities in diarrhoea treatment across regions.  
+While economic indicators correlate with higher treatment coverage, governance, policy, and healthcare investment are equally critical.  
+Interactive charts and collapsible code blocks ensure this report is accessible, transparent, and insightful for both data and policy audiences.
