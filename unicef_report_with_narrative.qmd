@@ -10,7 +10,16 @@ format:
     code-fold: true
 jupyter: python3
 ---
-
+{=html}
+<style>
+  /* limit width of main content and center it */
+  .content, .page-columns, .page-full {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+```
 ## Introduction
 
 This report analyzes trends, patterns, and relationships related to diarrhoea treatment coverage globally, using UNICEF health indicators.  
